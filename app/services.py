@@ -58,11 +58,15 @@ class UserService:
         self.collection.delete_one({"_id": user_obj_id})
         return str(user_obj_id)
     
-    ## this for deleting related data 
+    ## this for deleting related data. we are deleting user profile and also if a user is linked with someone it will be deleted 
 
-    def delete_related_data(self, user_obj_id):
-        self.collection.database["posts"].delete_many({"user_id": user_obj_id})
-        self.collection.database["comments"].delete_many({"user_id": user_obj_id})
+    def delete_related_data(self, user_id: str):
+        user_obj_id = ObjectId(user_id)
+        self.profile_collection.delete_many({"user_id": user_obj_id})
+        self.collection.update_many(
+        {"linked_ids": user_id},
+        {"$pull": {"linked_ids": user_id}}
+    )
 
     ## function to verify password     
 

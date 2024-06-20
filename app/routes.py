@@ -55,7 +55,7 @@ async def link_id(user_id: str, id_to_link: str, db: Database = Depends(get_db))
 async def delete_user(user_id: str, db: Database = Depends(get_db)):
     user_service = UserService(db["users"], db["profiles"])
     user_obj_id = user_service.delete_user(user_id)
-    user_service.delete_related_data(user_obj_id)
+    user_service.delete_related_data(user_id)
     return {"message": f"User {str(user_obj_id)} and all related data deleted successfully"}
 
 ## creating user profile
