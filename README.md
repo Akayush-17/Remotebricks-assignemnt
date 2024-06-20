@@ -80,14 +80,14 @@
 <img src="./assets/deleteuser.png">
 </div>
 
-### Hpw to run
- # clone this repository
- # open folder and install requirements using `pip install -r requirements.txt`.
- # run the app using `uvicorn app.main:app --reload`.
- # test the APIs on `http://127.0.0.1:8000/docs`.
+# How to run
+ ### clone this repository
+ ### open folder and install requirements using `pip install -r requirements.txt`.
+ ### run the app using `uvicorn app.main:app --reload`.
+ ### test the APIs on `http://127.0.0.1:8000/docs`.
 
 
-### Hoping for a positive reply from you :).
+# Hoping for a positive reply from you :).
 
 
 
