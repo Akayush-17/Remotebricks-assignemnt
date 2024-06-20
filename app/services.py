@@ -69,5 +69,50 @@ class UserService:
     def verify_password(self, plain_password: str, hashed_password: str) -> bool:
         return plain_password == hashed_password
 
+    ## creating user profile
+
+    def create_profile(self, profile: Profile):
+        profile_dict = profile.dict()
+        profile_dict["user_id"] = ObjectId(profile_dict["user_id"])
+    
+        if not self.collection.find_one({"_id": profile_dict["user_id"]}):
+            raise ValueError("User not found")
+        
+        result = self.profile_collection.insert_one(profile_dict)
+        profile_dict["id"] = str(result.inserted_id)
+        return {key: (str(value) if isinstance(value, ObjectId) else value) for key, value in profile_dict.items()}
+ 
+    ## joining user with their profile
+
+    def join_user_with_profile(self, user_id: str):
+        pipeline = [
+            {"$match": {"_id": ObjectId(user_id)}},
+            {
+                "$lookup": {
+                    "from": "profiles",
+                    "localField": "_id",
+                    "foreignField": "user_id",
+                    "as": "profile"
+                }
+            },
+            {"$unwind": {"path": "$profile", "preserveNullAndEmptyArrays": True}},
+            {
+                "$project": {
+                    "username": 1,
+                    "email": 1,
+                    "bio": "$profile.bio",
+                    "age": "$profile.age"
+                }
+            }
+        ]
+    
+        result = list(self.collection.aggregate(pipeline))
+        if result:
+            result[0]["id"] = str(result[0]["_id"])
+            del result[0]["_id"]
+            return {key: (str(value) if isinstance(value, ObjectId) else value) for key, value in result[0].items()}
+        else:
+            return None
+
 
     

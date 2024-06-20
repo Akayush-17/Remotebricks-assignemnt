@@ -58,6 +58,26 @@ async def delete_user(user_id: str, db: Database = Depends(get_db)):
     user_service.delete_related_data(user_obj_id)
     return {"message": f"User {str(user_obj_id)} and all related data deleted successfully"}
 
+## creating user profile
+
+@router.post("/users/{user_id}/profile")
+async def create_profile(profile: Profile, db: Database = Depends(get_db)):
+    user_service = UserService(db["users"], db["profiles"])
+    try:
+        profile_in_db = user_service.create_profile(profile)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    return profile_in_db
+
+## returning user with profile
+
+@router.get("/users/{user_id}/profile", response_model=UserWithProfile)
+async def get_user_with_profile(user_id: str, db: Database = Depends(get_db)):
+    user_service = UserService(db["users"], db["profiles"])
+    result = user_service.join_user_with_profile(user_id)
+    if not result:
+        raise HTTPException(status_code=404, detail="User not found")
+    return result
 
 
 

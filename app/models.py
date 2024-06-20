@@ -15,4 +15,16 @@ class UserInDB(BaseModel):
     hashed_password: str
     linked_ids: List[str] = []
 
+class Profile(BaseModel):
+    user_id: str
+    bio: Optional[str] = None
+    age: Optional[int] = None
+
+class UserWithProfile(BaseModel):
+    username: str
+    email: EmailStr
+    bio: Optional[str] = None
+    age: Optional[int] = None
+
+
 
