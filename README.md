@@ -1,5 +1,8 @@
 ## Developed a set of APIs for user registration, login, linking an ID, and implementing joins and chain delete functionality using Python and MongoDB.
 
+<h2>API Structure</h2>
+<img src="./assets/api structure on swagger.png">
+
             ##Requirements:
 
             1. Framework and Libraries:
@@ -32,8 +35,7 @@
 
 # Deleting all User related data ( Profile and Linked Id )
 
-<h2>API Structure</h2>
-<img src="./assets/api structure on swagger.png">
+
 <br/>
 <br/>
 <br/>
