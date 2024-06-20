@@ -1,3 +1,5 @@
+## All the routes are defined here 
+
 
 from fastapi import APIRouter, Depends, HTTPException
 from pymongo.database import Database
@@ -15,14 +17,19 @@ logger = logging.getLogger(__name__)
 
 def get_db():
     from pymongo import MongoClient
-    client = MongoClient(settings.mongodb_uri)
-    return client['assignment_db']
+    client = MongoClient(settings.mongodb_uri)   ## connecting with mongodb
+    return client['assignment_db']               ##database name 
+
+## new user regsitration 
 
 @router.post("/auth/register")
 async def register_user(user: User, db: Database = Depends(get_db)):
     user_service = UserService(db["users"], db["profiles"])
     user_in_db = user_service.create_user(user)
-    return user_in_db
+    return user_in_db              ## return the response after saving user in database                           
+
+
+## user login 
 
 @router.post("/auth/login")
 async def login(email: EmailStr, password: str, db: Database = Depends(get_db)):
@@ -30,6 +37,8 @@ async def login(email: EmailStr, password: str, db: Database = Depends(get_db)):
     if not user_service.authenticate_user(email, password):
         raise HTTPException(status_code=400, detail="Invalid credentials")
     return {"message": "Logged in successfully"}
+
+## Linking one user to another using their user id
 
 @router.post("/link_id")
 async def link_id(user_id: str, id_to_link: str, db: Database = Depends(get_db)):
@@ -39,6 +48,8 @@ async def link_id(user_id: str, id_to_link: str, db: Database = Depends(get_db))
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
     return {"message": "ID linked successfully"}
+
+## deleting user from everywhere
 
 @router.delete("/user/{user_id}")
 async def delete_user(user_id: str, db: Database = Depends(get_db)):

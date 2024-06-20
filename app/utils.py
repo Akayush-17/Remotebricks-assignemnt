@@ -1,3 +1,5 @@
+## utility file for hashing password and verifying password entered by user with hashed password 
+
 from passlib.context import CryptContext
 
 password_context = CryptContext(schemes=["bcrypt"],bcrypt__rounds=12)

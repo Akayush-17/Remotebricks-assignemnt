@@ -1,4 +1,4 @@
-
+# model file contain schema for user and database schema
 
 from pydantic import BaseModel, Field, EmailStr
 from typing import Optional,    List
