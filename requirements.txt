@@ -3,3 +3,5 @@ pymongo
 pydantic
 bcrypt
 uvicorn
+passlib
+pydantic-settings
